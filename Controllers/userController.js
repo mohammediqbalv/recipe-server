@@ -64,6 +64,31 @@ exports.getWhoPost = async (req,res)=>{
   }
 }
 
+// get all users for admin 
+exports.getallUsers = async (req,res)=>{
+  try{
+    const userPosts = await users.find()
+    res.status(200).json(userPosts)
+  }catch(err){
+    res.status(401).json(err);
+  }
+}
+
+// delete a user by id for admin
+exports.deleteUser = async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const deletedUser = await users.findByIdAndDelete(userId);
+    if (deletedUser) {
+      res.status(200).json({ message: "User deleted successfully", deletedUser });
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (err) {
+    res.status(500).json({ message: "Failed to delete user", error: err });
+  }
+}
+
 // edit user 
 exports.editUser = async (req,res)=>{
 
@@ -80,4 +105,19 @@ exports.editUser = async (req,res)=>{
     res.status(401).json(err)
   }
 
+}
+
+// get current user info
+exports.getCurrentUser = async (req, res) => {
+  const userId = req.payload;
+  
+  try {
+    const user = await users.findById(userId).select('-password'); // Exclude password
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to get user info', error: err.message });
+  }
 }

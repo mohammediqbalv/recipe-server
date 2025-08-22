@@ -5,16 +5,20 @@ const  storage = multer.diskStorage({
         callback(null,'./uploads')
     },
     filename:(req,file,callback)=>{
-        const filename = `image-${Date.now()}-${file.originalname}`
+        const filename = `media-${Date.now()}-${file.originalname}`
         callback(null,filename)
     }
 })
 const fileFilter = (req,file,callback)=>{
-    if(file.mimetype=== 'image/png' || file.mimetype=== 'image/jpg' || file.mimetype=== 'image/jpeg'  ){
+    const allowedTypes = [
+        'image/png', 'image/jpg', 'image/jpeg',
+        'video/mp4', 'video/webm', 'video/ogg', 'video/quicktime', 'video/x-msvideo'
+    ];
+    if(allowedTypes.includes(file.mimetype)){
         callback(null,true)
     }else{
         callback(null,false)
-        return callback(new Error("Only png,jpg,jpeg files are allowed!!!"))
+        return callback(new Error("Only png, jpg, jpeg images and mp4, webm, ogg, mov, avi videos are allowed!"))
     }
 }
 

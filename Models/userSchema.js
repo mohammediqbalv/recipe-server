@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema({
     },
     profile : {
         type : String,
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false
     }
 
 })
