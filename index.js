@@ -9,7 +9,7 @@ const mongoose = require('mongoose'); // ✅ Import mongoose
 const router = require('./Routes/router');
 const jwtMiddleware = require('./Middlewares/jwtMiddlewares');
 
-// create an express application
+// create an express applications
 const rbServer = express();
 
 rbServer.use(cors());
